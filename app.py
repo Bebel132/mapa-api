@@ -81,4 +81,4 @@ if __name__ == '__main__':
                 db.session.add(estado)
 
             db.session.commit()
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=10000, debug=True)
