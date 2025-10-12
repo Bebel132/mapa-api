@@ -23,14 +23,18 @@ class EstadoModel(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     estado = db.Column(db.String(50), nullable=False)
     porcentagem = db.Column(db.String(10), nullable=False)
-    area = db.Column(db.String(30), nullable=False)
+    area = db.Column(db.Float, nullable=False)
+    pessoas = db.Column(db.Integer, nullable=False)
+    densidade=db.Column(db.Integer, nullable=False)
 
     def json(self):
         return {
             'id': self.id,
             'estado': self.estado,
             'porcentagem': self.porcentagem,
-            'area': self.area
+            'area': self.area,
+            'pessoas': self.pessoas,
+            'densidade': self.densidade
         }
 
 ns = Namespace('estados', description='Ah sei la')
@@ -38,7 +42,9 @@ estado_model = ns.model('Estado', {
     'id': fields.Integer(readonly=True),
     'estado': fields.String(readonly=True),
     'porcentagem': fields.String(readonly=True),
-    'area': fields.String(readonly=True)
+    'area': fields.Float(readonly=True),
+    'pessoas': fields.Integer(readonly=True),
+    'densidade': fields.Integer(readonly=True)
 })
 
 @ns.route('/')
@@ -53,13 +59,14 @@ api.add_namespace(ns)
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
-        print(tabela_dados)
         if not EstadoModel.query.first():
             for dado in tabela_dados:
                 estado = EstadoModel(
                     estado=dado['estado'],
                     porcentagem=dado['porcentagem'],
-                    area=dado['area']
+                    area=dado['area'],
+                    pessoas=dado['pessoas'],	
+                    densidade=int(dado['pessoas']/dado['area'])
                 )
                 db.session.add(estado)
 

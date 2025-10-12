@@ -37,4 +37,19 @@ for linha in linhas:
     
     for tabela_linha in tabela_dados:
         if tabela_linha['estado'] == td[1].get_text(strip=True):
-            tabela_linha['area'] = td[2].get_text(strip=True).replace('\xa0', '.')
+            tabela_linha['area'] = float(td[2].get_text(strip=True).replace('\xa0', '').replace(",", "."))
+ 
+            
+# quantidade de pessoas
+pagina3 = requests.get("https://pt.wikipedia.org/wiki/Lista_de_unidades_federativas_do_Brasil_por_popula%C3%A7%C3%A3o", headers=headers)
+dados_pagina = BeautifulSoup(pagina3.content, 'html.parser')
+
+tabela = dados_pagina.find("table", class_="wikitable")
+linhas = tabela.find_all("tr")[2:-1]
+
+for linha in linhas:
+	td = linha.find_all("td")
+	# print(linha)
+	for tabela_linha in tabela_dados:
+		if tabela_linha["estado"] == td[0].find_all("a")[0].get_text(strip=True):
+			tabela_linha["pessoas"] = int(td[1].get_text(strip=True).replace('\xa0', ''))
