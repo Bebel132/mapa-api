@@ -49,7 +49,6 @@ linhas = tabela.find_all("tr")[2:-1]
 
 for linha in linhas:
 	td = linha.find_all("td")
-	# print(linha)
 	for tabela_linha in tabela_dados:
 		if tabela_linha["estado"] == td[0].find_all("a")[0].get_text(strip=True):
 			tabela_linha["pessoas"] = int(td[1].get_text(strip=True).replace('\xa0', ''))
