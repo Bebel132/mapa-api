@@ -1,8 +1,4 @@
-Claro! Aqui está o texto exclusivo para o README da API:
-
----
-
-# Acesso à Internet no Brasil
+# API - Acesso à Internet no Brasil
 
 Esta API fornece dados estruturados sobre o acesso à internet nos estados brasileiros. Ela é utilizada para alimentar o infográfico interativo do projeto, permitindo que o frontend consulte informações atualizadas de forma dinâmica e eficiente.
 
