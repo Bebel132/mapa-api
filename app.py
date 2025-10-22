@@ -1,58 +1,20 @@
 from flask import Flask
-from flask_restx import Api, Resource, Namespace, fields
-from flask_sqlalchemy import SQLAlchemy
+from flask_restx import Api
 from flask_cors import CORS
+from models.estado import EstadoModel
 from resource.scrap import tabela_dados
-
-
-db = SQLAlchemy()
+from extensions import db
+from resource.estados import ns
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///banco.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db.init_app(app)
-# CORS(app)
-CORS(app, origins=["https://bebel132.github.io"], methods=["GET"])
+CORS(app)
+# CORS(app, origins=["https://bebel132.github.io"], methods=["GET"])
 
 api = Api(app, doc="/docs")
-
-class EstadoModel(db.Model):
-    __tablename__ = 'estados'
-
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    estado = db.Column(db.String(50), nullable=False)
-    porcentagem = db.Column(db.String(10), nullable=False)
-    area = db.Column(db.Float, nullable=False)
-    pessoas = db.Column(db.Integer, nullable=False)
-    densidade=db.Column(db.Integer, nullable=False)
-
-    def json(self):
-        return {
-            'id': self.id,
-            'estado': self.estado,
-            'porcentagem': self.porcentagem,
-            'area': self.area,
-            'pessoas': self.pessoas,
-            'densidade': self.densidade
-        }
-
-ns = Namespace('estados', description='Ah sei la')
-estado_model = ns.model('Estado', {
-    'id': fields.Integer(readonly=True),
-    'estado': fields.String(readonly=True),
-    'porcentagem': fields.String(readonly=True),
-    'area': fields.Float(readonly=True),
-    'pessoas': fields.Integer(readonly=True),
-    'densidade': fields.Integer(readonly=True)
-})
-
-@ns.route('/')
-class Estados(Resource):    
-    def get(self):
-        return [
-            estado.json() for estado in EstadoModel.query.all()
-        ]
 
 api.add_namespace(ns)
 
