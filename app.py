@@ -11,8 +11,8 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///banco.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db.init_app(app)
-CORS(app)
-# CORS(app, origins=["https://bebel132.github.io"], methods=["GET"])
+# CORS(app)
+CORS(app, origins=["https://bebel132.github.io"], methods=["GET"])
 
 api = Api(app, doc="/docs")
 
