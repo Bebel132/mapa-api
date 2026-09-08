@@ -12,7 +12,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db.init_app(app)
 # CORS(app)
-CORS(app, origins=["https://bebel132.github.io"], methods=["GET"])
+CORS(app, origins=["https://bebel132.github.io", "http://localhost:5500", "http://127.0.0.1:5500"], methods=["GET"])
 
 api = Api(app, doc="/docs")
 
